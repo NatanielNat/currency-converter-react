@@ -2,6 +2,11 @@ import Result from "./Result"
 import Select from "./Select"
 import { useState } from "react"
 import { currencies } from "./currency";
+import {Button} from "./styled"
+
+
+
+
 
 function App() {
 
@@ -23,7 +28,10 @@ function App() {
   const onButtonClick = (event) => {
     event.preventDefault();
     calculateResult(currency, amount);
-  }
+  };
+
+
+
 
 
   return (
@@ -36,6 +44,7 @@ function App() {
             <div className="fieldset__currencyPlace">
               <label className="fieldset__label ">Zloty</label>
               <input
+              type="number"
                 value={amount}
                 onChange={({ target }) => setAmount(target.value)}
                 className="fieldset__input js-amount"
@@ -46,9 +55,10 @@ function App() {
               currencies={currencies}
               setCurrency={setCurrency}
             />
-            <button className="submitButton"
+            <Button className="submitButton"
               onClick={onButtonClick}
-            > Submit </button>
+
+            > Submit </Button>
             <Result
               result={result} />
           </fieldset>
