@@ -1,28 +1,28 @@
 import Result from "./Result"
 import Select from "./Select"
-import { useState } from "react"
-import { currencies } from "./currency";
-import {Button} from "./styled"
-
-
-
+import Header from "./Header"
+import { useState, useEffect } from "react"
+import { Button,Loading,Failure} from "./styled"
+import { useRatesData } from "./useRatesData"
+import { Clock } from "./Clock";
 
 
 function App() {
 
   const [result, setResult] = useState();
+  const ratesData = useRatesData();
 
   const calculateResult = (currency, amount) => {
-    const rate = currencies.find(({ short }) => short === currency).rate;
+    const rate = ratesData.rates[currency];
 
     setResult({
       sourceAmount: +amount,
-      targetAmount: amount / rate,
+      targetAmount: amount * rate,
       currency,
     });
   };
 
-  const [currency, setCurrency] = useState(currencies[0].short);
+  const [currency, setCurrency] = useState("AED");
   const [amount, setAmount] = useState("");
 
   const onButtonClick = (event) => {
@@ -38,21 +38,36 @@ function App() {
     <>
       <form className="js-form">
         <div className="container">
-          <div className="container__title">VOID</div>
+          <Header />
+          < Clock />
           <fieldset className="fieldset">
             <legend className="fieldset_legend">Currency Convert</legend>
+            {ratesData.state === "loading"
+              ? (
+                <Loading>
+                  <p>Sekunda.... <br /> musi sie wszystko zaladowac</p>
+                </Loading>
+              )
+              : ratesData.state === "error" ?
+                (
+                  <Failure>
+                    Hmmmm.... cos poszlo nie tak.
+                  </Failure>
+                ):
+                  (
+                <>
             <div className="fieldset__currencyPlace">
-              <label className="fieldset__label ">Zloty</label>
+              <label className="fieldset__label ">PLN</label>
               <input
-              type="number"
+                type="number"
                 value={amount}
                 onChange={({ target }) => setAmount(target.value)}
                 className="fieldset__input js-amount"
               />
             </div>
             <Select
+              ratesData={ratesData}
               currency={currency}
-              currencies={currencies}
               setCurrency={setCurrency}
             />
             <Button className="submitButton"
@@ -61,6 +76,8 @@ function App() {
             > Submit </Button>
             <Result
               result={result} />
+              </>
+            )}
           </fieldset>
         </div>
       </form>

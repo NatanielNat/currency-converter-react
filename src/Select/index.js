@@ -1,21 +1,23 @@
 
-const Select = ({ currency, setCurrency, currencies }) => (
+const Select = ({ currency, setCurrency,ratesData}) => (
     <div className="fieldset__currencyPlace">
-        <label className="fieldset__label "><span className="fieldset__select js-currencyNow">Euro</span></label>
+        <label className="fieldset__label "><span className="fieldset__select js-currencyNow">{currency}</span></label>
 
         <select
             className="fieldset__input js-select"
             value={currency}
             onChange={({ target }) => setCurrency(target.value)}
         >
-            {currencies.map((currency => (
+            {!!ratesData.rates && Object.keys(ratesData.rates).map(((currency) => (
                 <option
-                    key={currency.short}
-                    value={currency.short}
+                    key={currency}
+                    value={currency}
                 >
-                    {currency.name}
+                    {currency}
                 </option>
             )))};
+
+
 
         </select>
     </div>

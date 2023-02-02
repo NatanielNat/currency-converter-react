@@ -10,6 +10,14 @@ background: #fff;
   transition: 0.5s;
 `;
 
+export const Loading = styled.p`
+font-size:30px
+`;
+
+export const Failure = styled.p`
+font-size:30px
+`;
+
 
 
 
